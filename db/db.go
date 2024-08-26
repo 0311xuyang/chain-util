@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/guregu/dynamo"
 )
@@ -17,8 +18,9 @@ const TableUser = "Users"
 
 func init() {
 	DynamoDB = dynamo.New(session.Must(session.NewSession()), &aws.Config{
-		Region:   aws.String("us-east-1"),
-		Endpoint: aws.String("http://127.0.0.1:8000"),
+		Region:      aws.String("us-east-1"),
+		Endpoint:    aws.String("http://127.0.0.1:8000"),
+		Credentials: credentials.NewStaticCredentials("dummy", "dummy", ""),
 	})
 }
 
