@@ -1,0 +1,29 @@
+name: Run test suites
+
+on:
+  pull-request:
+    branches:
+      - main
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+      services:
+        dynamo-local:
+          image: amazon/dynamodb-local:latest
+          ports:
+            - 8000:8000
+          options: --name dynamo-local
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Set up Go
+          uses: actions/setup-go@v2
+          with:
+            go-version: 1.22
+        - name: Install dependencies
+          run: go mod download
+        - name: Wait for DynamoDB Local to start
+          run: |
+            while ! nc -z localhost 8000; do sleep 1; done
+        - name: Run tests
+          run: go test -v ./...
