@@ -4,6 +4,8 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gen"
 	"gorm.io/gorm"
+
+	"github.com/0311xuyang/chain-util/dal"
 )
 
 var db *gorm.DB
@@ -15,7 +17,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	prepare(db)
+	dal.Prepare(db)
 }
 
 func main() {
