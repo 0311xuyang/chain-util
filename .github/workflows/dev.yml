@@ -17,7 +17,7 @@ jobs:
         image: mysql:latest
         ports:
           - 3306:3306
-        options: --name mysql-local -e MYSQL_ROOT_PASSWORD=123456
+        options: --name mysql-local -e MYSQL_ROOT_PASSWORD=123456 -e MYSQL_DATABASE=toolkit
     steps:
       - name: Checkout
         uses: actions/checkout@v3
