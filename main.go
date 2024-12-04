@@ -3,27 +3,27 @@ package main
 import (
 	"fmt"
 
-	"github.com/0311xuyang/chain-util/db"
+	"github.com/0311xuyang/chain-util/route"
+	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	// Create a new DB object.
-	Store := db.New()
+// LoadRoute defines the routes for the server.
+func LoadRoute(server *gin.Engine) {
+	dbController := server.Group("/db")
+	dbController.GET("/get/:id", route.GetUser)
+	dbController.POST("/set", route.SetUser)
+}
 
-	// Create a new User object.
-	user := &db.User{
-		ID:    "1",
-		Name:  "John Doe",
-		Email: "user1@mail.com",
-	}
-	Store.PutUser(user)
-	fmt.Println("User created.")
-
-	// Get the user by ID.
-	user, err := Store.GetUser("1")
-	if err != nil {
+// StartServer a gin server
+func StartServer() {
+	gin.SetMode(gin.DebugMode)
+	server := gin.Default()
+	LoadRoute(server)
+	if err := server.Run(":8080"); err != nil {
 		fmt.Println("Error:", err)
-		return
 	}
-	fmt.Println("User:", user)
+}
+
+func main() {
+	StartServer()
 }
